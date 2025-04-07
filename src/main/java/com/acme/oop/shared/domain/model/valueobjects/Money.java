@@ -12,9 +12,10 @@ public record Money(BigDecimal amount, Currency currency) {
             throw new IllegalArgumentException("Currency cannot be null");
         }
         if (amount.scale() > 2) {
-            throw new IllegalArgumentException("Amount cannot have more than 2 decimal places");
+            throw new IllegalArgumentException("Amount cannot be greater than 2");
         }
     }
+
 
     public static Money zero() {
         return new Money(BigDecimal.ZERO, Currency.getInstance("USD"));
@@ -22,13 +23,12 @@ public record Money(BigDecimal amount, Currency currency) {
 
     public Money add(Money other) {
         if (!this.currency.equals(other.currency)) {
-            throw new IllegalArgumentException("Cannot add Money with different currencies");
+            throw new IllegalArgumentException("Cannot add money to a different currency");
         }
         return new Money(this.amount.add(other.amount), this.currency);
     }
 
     public Money multiply(int multiplier) {
-        return new Money(this.amount.multiply(BigDecimal.valueOf(multiplier)), this.currency);
-    }
-
+        return new Money(this.amount.multiply(new BigDecimal(multiplier)), this.currency);}
 }
+
